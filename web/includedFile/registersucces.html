@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Rejestracja</title>
+    <link rel="stylesheet" media="screen" href="web/CSS/bootstrap.css">
+</head>
+<body>
+<div class="container">
+    <div class="card card-container">
+        <img id="profile-img" class="profile-img-card"
+             src="web/images/twittericon.png"/>
+        <p id="profile-name" class="profile-name-card"></p>
+        <form class="form-signin" action="login.php">
+            <span id="reauth-email" class="reauth-email"></span>
+            <span id="reauth-email" class="reauth-email">Rejestracja Przebiegła Pomyślnie</span>
+            <span id="reauth-email" class="reauth-email">Zostaniesz przeniesiony na stronę logowania</span>
+            <span id="reauth-email" class="reauth-email goToIndex">Za <span id="sekundy"></span></span>
+
+            <!-- Odliczanie do przeniesienia -->
+            <script type="text/javascript">
+                o=document.getElementById('sekundy')
+                function odliczaj(o,sek){
+                    o.innerHTML=sek
+                    if(sek>0)setTimeout(function(){odliczaj(o,--sek)},1e3)
+                }
+                odliczaj(document.getElementById('sekundy'),5)
+            </script>
+
+            <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">ZALOGUJ SIĘ!</button>
+        </form>
+
+    </div>
+</div>
+</body>
+</html>

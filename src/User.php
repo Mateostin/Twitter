@@ -4,21 +4,32 @@ class User
 {
 
     private $id;
-    private $username;
+    private $firstname;
+    private $secondname;
     private $hashPass;
     private $email;
+    private $avatar;
 
     public function __construct()
     {
         $this->id = -1;
-        $this->username = '';
+        $this->firstname = '';
+        $this->secondname = '';
         $this->email = '';
         $this->hashPass = '';
+        $this->avatar = 'user_avatars/customavatar.png';
     }
 
-    public function setUsername($newUsername)
+    public function setFirstname($newFirstname)
     {
-        $this->username = $newUsername;
+        $newFirstname = ucfirst($newFirstname);
+        $this->firstname = $newFirstname;
+    }
+
+    public function setSecondname($newSecondname)
+    {
+        $newSecondname = ucfirst($newSecondname);
+        $this->secondname = $newSecondname;
     }
 
     public function setEmail($newEmail)
@@ -32,14 +43,29 @@ class User
         $this->hashPass = $newHashedPassword;
     }
 
+    public function setAvatar($avatar)
+    {
+        $this->avatar = $avatar;
+    }
+
+    public function getAvatar()
+    {
+        return $this->avatar;
+    }
+
     public function getId()
     {
         return $this->id;
     }
 
-    public function getUsername()
+    public function getFirstname()
     {
-        return $this->username;
+        return $this->firstname;
+    }
+
+    public function getSecondname()
+    {
+        return $this->secondname;
     }
 
     public function getEmail()
@@ -55,16 +81,16 @@ class User
     public function saveToDB(PDO $conn)
     {
         if ($this->id == -1) {
-            $sql = 'INSERT INTO Users(username, email, hash_pass) VALUES(:username, :email, :pass)';
+            $sql = 'INSERT INTO Users(firstname, secondname, email, hash_pass, avatar) VALUES(:firstname, :secondname, :email, :pass, :avatar)';
             $stmt = $conn->prepare($sql);
-            $result = $stmt->execute(['username' => $this->username, 'email' => $this->email, 'pass' => $this->hashPass]);
+            $result = $stmt->execute(['firstname' => $this->firstname, 'secondname' => $this->secondname, 'email' => $this->email, 'pass' => $this->hashPass, 'avatar' => $this->avatar]);
             if ($result !== false) {
                 $this->id = $conn->lastInsertId();
                 return true;
             }
         } else {
-            $stmt = $conn->prepare('UPDATE Users SET email=:email, username=:username, hash_pass=:hash_pass WHERE  id=:id ');
-            $result = $stmt->execute(['email' => $this->email, 'username' => $this->username, 'hash_pass' => $this->hashPass, 'id' => $this->id]);
+            $stmt = $conn->prepare('UPDATE Users SET email=:email, firstname=:firstname, secondname=:secondname, hash_pass=:hash_pass, avatar=:avatar WHERE  id=:id ');
+            $result = $stmt->execute(['email' => $this->email, 'firstname' => $this->firstname, 'secondname' => $this->secondname, 'hash_pass' => $this->hashPass, 'id' => $this->id, 'avatar' => $this->avatar]);
             if ($result === true) {
                 return true;
             }
@@ -79,9 +105,12 @@ class User
         if ($result === true && $stmt->rowCount() > 0) {
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
             $loadedUser = new User();
-            $loadedUser->id = $row['id'];            $loadedUser->username = $row['username'];
+            $loadedUser->id = $row['id'];
+            $loadedUser->firstname = $row['firstname'];
+            $loadedUser->secondname = $row['secondname'];
             $loadedUser->hashPass = $row['hash_pass'];
             $loadedUser->email = $row['email'];
+            $loadedUser->avatar = $row['avatar'];
             return $loadedUser;
         }
         return null;
@@ -95,25 +124,11 @@ class User
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
             $loadedUser = new User();
             $loadedUser->id = $row['id'];
-            $loadedUser->username = $row['username'];
+            $loadedUser->firstname = $row['firstname'];
+            $loadedUser->secondname = $row['secondname'];
             $loadedUser->hashPass = $row['hash_pass'];
             $loadedUser->email = $row['email'];
-            return $loadedUser;
-        }
-        return null;
-    }
-
-    static public function loadUserByUsername(PDO $conn, $username)
-    {
-        $stmt = $conn->prepare('SELECT * FROM Users WHERE username=:username');
-        $result = $stmt->execute(['username' => $username]);
-        if ($result === true && $stmt->rowCount() > 0) {
-            $row = $stmt->fetch(PDO::FETCH_ASSOC);
-            $loadedUser = new User();
-            $loadedUser->id = $row['id'];
-            $loadedUser->username = $row['username'];
-            $loadedUser->hashPass = $row['hash_pass'];
-            $loadedUser->email = $row['email'];
+            $loadedUser->avatar = $row['avatar'];
             return $loadedUser;
         }
         return null;
@@ -128,9 +143,11 @@ class User
             foreach ($result as $row) {
                 $loadedUser = new User();
                 $loadedUser->id = $row['id'];
-                $loadedUser->username = $row['username'];
+                $loadedUser->firstname = $row['firstname'];
+                $loadedUser->secondname = $row['secondname'];
                 $loadedUser->hashPass = $row['hash_pass'];
                 $loadedUser->email = $row['email'];
+                $loadedUser->avatar = $row['avatar'];
                 $ret[] = $loadedUser;
             }
         }
@@ -160,4 +177,16 @@ class User
             return false;
         }
     }
+
+    static public function passVerification(PDO $conn, $id, $passFromUser)
+    {
+        $user = User::loadUserById($conn, $id);
+
+        if ($user !== null && password_verify($passFromUser, $user->getPassword()) == $passFromUser) {
+            return $user;
+        } else {
+            return false;
+        }
+    }
+
 }
