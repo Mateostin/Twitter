@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Czas generowania: 10 Sty 2018, 20:44
+-- Czas generowania: 21 Sty 2018, 11:17
 -- Wersja serwera: 5.7.20-0ubuntu0.16.04.1
 -- Wersja PHP: 7.0.22-0ubuntu0.16.04.1
 
@@ -41,7 +41,8 @@ CREATE TABLE `Comments` (
 INSERT INTO `Comments` (`comment_id`, `user_id`, `tweet_id`, `text`, `creationDate`) VALUES
 (1, 37, 52, 'A tutaj Testowy Komentarz !!! :D', '2018-01-10 20:31:40'),
 (2, 37, 52, 'Jeszcze jeden! 😜😜👌', '2018-01-10 20:32:01'),
-(3, 37, 53, 'Linki też działają ', '2018-01-10 20:34:27');
+(3, 37, 53, 'Linki też działają ', '2018-01-10 20:34:27'),
+(4, 39, 54, 'asdfasdfasdfa', '2018-01-14 08:56:49');
 
 -- --------------------------------------------------------
 
@@ -57,6 +58,13 @@ CREATE TABLE `Messages` (
   `status` varchar(2) COLLATE utf8_polish_ci DEFAULT NULL,
   `creationDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
+
+--
+-- Zrzut danych tabeli `Messages`
+--
+
+INSERT INTO `Messages` (`message_id`, `sender_id`, `receiver_id`, `text`, `status`, `creationDate`) VALUES
+(1, 40, 39, 'asdfasdfasdfasdf', '0', '2018-01-14 08:59:51');
 
 -- --------------------------------------------------------
 
@@ -77,7 +85,8 @@ CREATE TABLE `Tweet` (
 
 INSERT INTO `Tweet` (`id`, `user_id`, `text`, `creationDate`) VALUES
 (52, 37, 'Testowy Tweet !!! :) 🙈', '2018-01-10 20:31:26'),
-(53, 37, 'https://www.youtube.com/channel/UCdTnQ5I4SgDNc4aXEeyUIEA', '2018-01-10 20:34:04');
+(53, 37, 'https://www.youtube.com/channel/UCdTnQ5I4SgDNc4aXEeyUIEA', '2018-01-10 20:34:04'),
+(54, 39, '❤️😜', '2018-01-14 08:56:43');
 
 -- --------------------------------------------------------
 
@@ -100,7 +109,9 @@ CREATE TABLE `Users` (
 
 INSERT INTO `Users` (`id`, `email`, `firstname`, `secondname`, `hash_pass`, `avatar`) VALUES
 (37, 'mat.lipecki@gmail.com', 'Mateusz', 'Lipecki', '$2y$10$Et2zK8LYxpBYJRGl4oB92uTbjZYwDqTnX6h/4FiK66hAOmVtH8yCa', 'user_avatars/customavatar.png'),
-(38, 'test@o2.pl', 'Testowy', 'Uzytkownik', '$2y$10$HzolBn/N.0nRAIV/.q4ojOs//ubjeGZfTlPecRy8.gmpqa2XLiej2', 'user_avatars/customavatar.png');
+(38, 'test@o2.pl', 'Testowy', 'Uzytkownik', '$2y$10$HzolBn/N.0nRAIV/.q4ojOs//ubjeGZfTlPecRy8.gmpqa2XLiej2', 'user_avatars/customavatar.png'),
+(39, 'aaa@o2.pl', 'Bskfgsg', 'Sdfgsdf', '$2y$10$T75ud7J.Y.xl6qq3DExTcOi8brusfrcaq88lkFkAawOqox9KEgPwS', 'user_avatars/indeks.jpeg'),
+(40, 'aaaa@o2.pl', 'Ggsdgsd', 'Gsdgsdfd', '$2y$10$mCVGG5haAbTu.ILaCZxCmOhJ/CF.xwuLEI1MbW7fCJtxmMtfaZwHG', 'user_avatars/customavatar.png');
 
 --
 -- Indeksy dla zrzutów tabel
@@ -143,22 +154,22 @@ ALTER TABLE `Users`
 -- AUTO_INCREMENT dla tabeli `Comments`
 --
 ALTER TABLE `Comments`
-  MODIFY `comment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `comment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT dla tabeli `Messages`
 --
 ALTER TABLE `Messages`
-  MODIFY `message_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `message_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT dla tabeli `Tweet`
 --
 ALTER TABLE `Tweet`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
 --
 -- AUTO_INCREMENT dla tabeli `Users`
 --
 ALTER TABLE `Users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 --
 -- Ograniczenia dla zrzutów tabel
 --
